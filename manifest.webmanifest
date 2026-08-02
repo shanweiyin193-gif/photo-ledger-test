@@ -1,0 +1,26 @@
+{
+  "name": "電子黒板付き 写真台帳",
+  "short_name": "写真台帳",
+  "description": "施工管理向けの電子黒板付き写真台帳作成アプリ",
+  "lang": "ja",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#eef3f6",
+  "theme_color": "#153247",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
