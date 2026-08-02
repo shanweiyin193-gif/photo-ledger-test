@@ -228,12 +228,76 @@
       font-size:9px;font-weight:900;padding:6px 8px;border-radius:999px;background:#e5f5ec;color:#126540
     }
     .net.off{background:#ffe7e8;color:#a83038}
+
+    .live-camera-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:16px}
+    .live-camera-panel{min-width:0}
+    .live-camera-stage{
+      position:relative;width:100%;min-height:260px;background:#050a0e;border-radius:15px;
+      overflow:hidden;display:grid;place-items:center;touch-action:none;border:1px solid #263843;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)
+    }
+    .live-camera-stage video,.live-camera-stage img{
+      width:100%;height:auto;max-height:72vh;display:none;object-fit:contain;background:#000
+    }
+    .live-camera-stage video.show,.live-camera-stage img.show{display:block}
+    .camera-placeholder{padding:44px 18px;text-align:center;color:#c8d4dc;line-height:1.7;font-size:12px}
+    .camera-placeholder strong{display:block;font-size:16px;color:#fff;margin-bottom:6px}
+    .camera-status{
+      position:absolute;left:10px;top:10px;z-index:8;padding:7px 10px;border-radius:999px;
+      background:rgba(9,20,28,.78);color:#fff;font-size:10px;font-weight:900;backdrop-filter:blur(8px)
+    }
+    .camera-status.live:before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;margin-right:6px;box-shadow:0 0 0 4px rgba(239,68,68,.2)}
+    .live-board-overlay{
+      position:absolute;z-index:10;width:42%;left:55%;top:55%;touch-action:none;user-select:none;
+      cursor:grab;transform-origin:top left;filter:drop-shadow(0 8px 15px rgba(0,0,0,.28))
+    }
+    .live-board-overlay.dragging{cursor:grabbing}
+    .live-board-overlay.is-hidden{display:none}
+    .live-board-overlay .board-preview{border-width:4px;box-shadow:none}
+    .live-board-overlay .board-title{padding:5px;font-size:clamp(8px,1.75vw,17px)}
+    .live-board-overlay .board-row{grid-template-columns:29% 71%}
+    .live-board-overlay .board-row b,.live-board-overlay .board-row span{
+      padding:clamp(3px,.65vw,8px);font-size:clamp(6px,1.13vw,12px);line-height:1.25;overflow-wrap:anywhere
+    }
+    .live-board-overlay.board-black .board-preview{background:#12171b;border-color:#777}
+    .live-board-overlay.board-white .board-preview{background:rgba(255,255,255,.95);border-color:#2e3c46;color:#111d25}
+    .live-board-overlay.board-white .board-title{border-bottom-color:rgba(20,30,36,.8)}
+    .live-board-overlay.board-white .board-row{border-bottom-color:rgba(20,30,36,.55)}
+    .live-board-overlay.board-white .board-row b{border-right-color:rgba(20,30,36,.55)}
+    .camera-command-bar{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:13px}
+    .capture-main{
+      width:74px;height:74px;border-radius:50%;padding:0;border:7px solid #fff;background:#ef4444;
+      box-shadow:0 0 0 3px #cad4da,0 10px 25px rgba(0,0,0,.2);color:transparent;min-height:74px
+    }
+    .capture-main:disabled{opacity:.45;cursor:not-allowed}
+    .camera-mini-note{font-size:10px;color:var(--muted);line-height:1.55;margin-top:9px;text-align:center}
+    .board-editor{display:grid;gap:10px}
+    .board-editor textarea{min-height:68px}
+    .corner-buttons{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .corner-buttons button{min-height:40px}
+    .toggle-row{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 11px;
+      border:1px solid var(--line);border-radius:10px;background:#f8fafb;font-size:11px;font-weight:800
+    }
+    .toggle-row input{width:22px;height:22px;flex:none}
+    .capture-result{display:none;margin-top:16px}
+    .capture-result.show{display:block}
+    .capture-preview-shell{background:#101820;border-radius:14px;overflow:auto;text-align:center}
+    .capture-preview-shell canvas{max-width:100%;height:auto;margin:0 auto;display:block}
+    .camera-error{
+      display:none;padding:12px 14px;margin-bottom:12px;border-radius:11px;background:#fff0f0;
+      border:1px solid #efc5c5;color:#9b2929;font-size:11px;line-height:1.6
+    }
+    .camera-error.show{display:block}
+    .board-size-value{min-width:42px;text-align:right;font-size:11px;font-weight:900;color:#3d5362}
+
     @media(max-width:1100px){
       .stats{grid-template-columns:repeat(2,1fr)}
       .two{grid-template-columns:1fr}
       .flow{grid-template-columns:repeat(2,1fr)}
       .flow-step:nth-child(2):after{display:none}
       .field,.field.q{grid-column:span 6}
+      .live-camera-layout{grid-template-columns:1fr}
     }
     @media(max-width:760px){
       input,select,textarea{font-size:16px}
@@ -266,6 +330,9 @@
       .selected-box{grid-template-columns:auto 1fr}
       .board-row{grid-template-columns:88px 1fr}
       .board-row b,.board-row span{padding:8px;font-size:11px}
+      .live-camera-stage{min-height:220px}
+      .live-board-overlay{width:45%}
+      .capture-main{width:68px;height:68px;min-height:68px}
     }
     @media(display-mode:standalone){
       .btn.install{display:none!important}
@@ -290,7 +357,7 @@
   <aside class="side" id="side">
     <div class="brand">
       <div class="logo">📸</div>
-      <div><h1>電子黒板付き<br>写真台帳</h1><p>施工写真をかんたん整理</p></div>
+      <div><h1>電子黒板付き<br>写真台帳</h1><p>v4・アプリ内カメラ対応</p></div>
     </div>
     <nav class="nav">
       <button class="active" data-view="home">📋 台帳一覧</button>
@@ -383,68 +450,87 @@
         </div>
       </section>
 
-      <section class="view" id="view-camera">
-        <div class="grid two">
-          <div class="card">
-            <div class="card-head">
-              <div><h3>1. 撮影する台帳番号</h3><p>台帳一覧の「黒板に設定」で選択します</p></div>
-            </div>
-            <div class="card-body">
-              <div id="selectedEntryBox"></div>
-              <div class="actions no-print">
-                <button class="btn" onclick="goView('home')">台帳一覧から選ぶ</button>
-              </div>
-            </div>
-          </div>
 
-          <div class="card">
-            <div class="card-head">
-              <div><h3>2. 電子黒板プレビュー</h3><p>選択中の台帳内容が自動表示されます</p></div>
-            </div>
-            <div class="card-body">
-              <div id="boardPreview"></div>
-            </div>
+      <section class="view" id="view-camera">
+        <div class="card">
+          <div class="card-head">
+            <div><h3>1. 撮影する台帳番号</h3><p>台帳一覧で「黒板に設定」を選択してください</p></div>
+          </div>
+          <div class="card-body">
+            <div id="selectedEntryBox"></div>
+            <div class="actions no-print"><button class="btn" onclick="goView('home')">台帳一覧から選び直す</button></div>
           </div>
         </div>
 
         <div class="card">
           <div class="card-head">
-            <div><h3>3. 現場写真を撮影・合成</h3><p>iPhone/iPadではカメラ、Windowsでは画像ファイルを選択できます</p></div>
+            <div><h3>2. アプリ内カメラで撮影</h3><p>右下の電子黒板は指で移動でき、2本指またはスライダーで拡大・縮小できます</p></div>
           </div>
           <div class="card-body">
-            <div class="camera-area">
-              <label>現場写真を撮影または選択</label>
-              <input id="cameraFile" type="file" accept="image/*" capture="environment">
-              <div class="controls">
-                <div>
-                  <label>黒板の位置</label>
-                  <div class="position-options">
-                    <label><input type="radio" name="boardPos" value="bl" checked>左下</label>
-                    <label><input type="radio" name="boardPos" value="br">右下</label>
-                    <label><input type="radio" name="boardPos" value="tl">左上</label>
-                    <label><input type="radio" name="boardPos" value="tr">右上</label>
+            <div class="camera-error" id="cameraError"></div>
+            <div class="live-camera-layout">
+              <div class="live-camera-panel">
+                <div class="live-camera-stage" id="liveCameraStage">
+                  <div class="camera-placeholder" id="cameraPlaceholder">
+                    <strong>カメラを起動してください</strong>
+                    「カメラを開始」を押すと、この画面内で撮影できます。
                   </div>
+                  <video id="cameraVideo" autoplay muted playsinline></video>
+                  <img id="selectedImagePreview" alt="選択した現場写真">
+                  <div class="camera-status" id="cameraStatus">待機中</div>
+                  <div class="live-board-overlay" id="liveBoard"></div>
                 </div>
-                <div>
-                  <label>黒板の大きさ</label>
-                  <div class="range-row"><span>小</span><input id="boardSize" type="range" min="28" max="60" value="42"><span>大</span></div>
-                  <label style="margin-top:13px">黒板の色</label>
-                  <select id="boardColor">
-                    <option value="green">緑色の黒板</option>
-                    <option value="black">黒色の黒板</option>
-                    <option value="white">白色の黒板</option>
-                  </select>
+
+                <div class="camera-command-bar no-print">
+                  <button class="btn primary" id="startCameraBtn" type="button">カメラを開始</button>
+                  <button class="btn" id="switchCameraBtn" type="button">カメラ切替</button>
+                  <button class="capture-main" id="captureBtn" type="button" disabled aria-label="撮影">撮影</button>
+                  <button class="btn" id="selectPhotoBtn" type="button">写真を選択</button>
+                  <input id="cameraFile" type="file" accept="image/*" hidden>
+                  <button class="btn danger" id="stopCameraBtn" type="button">カメラ停止</button>
+                </div>
+                <div class="camera-mini-note">カメラ許可が表示されたら「許可」を選択してください。カメラが使えない場合は「写真を選択」から撮影済み画像を読み込めます。</div>
+              </div>
+
+              <div>
+                <div class="board-editor">
+                  <div><label>黒板の工事名</label><input id="boardWorkName"></div>
+                  <div><label>黒板の工種</label><input id="boardWorkType"></div>
+                  <div><label>黒板の工事内容</label><textarea id="boardWorkDetail"></textarea></div>
+                  <div><label>黒板の撮影箇所</label><input id="boardShootPlace"></div>
+                  <div><label>黒板の施工会社</label><input id="boardContractor"></div>
+                  <div><label>黒板の撮影日</label><input id="boardShootDate" type="date"></div>
+
+                  <div>
+                    <label>黒板を四隅へ移動</label>
+                    <div class="corner-buttons no-print">
+                      <button class="btn small" type="button" data-corner="tl">↖ 左上</button>
+                      <button class="btn small" type="button" data-corner="tr">右上 ↗</button>
+                      <button class="btn small" type="button" data-corner="bl">↙ 左下</button>
+                      <button class="btn small primary" type="button" data-corner="br">右下 ↘</button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label>黒板の大きさ</label>
+                    <div class="range-row"><span>小</span><input id="boardSize" type="range" min="26" max="65" value="42"><span>大</span><span class="board-size-value" id="boardSizeValue">42%</span></div>
+                  </div>
+                  <div><label>黒板の色</label><select id="boardColor"><option value="green">緑色</option><option value="black">黒色</option><option value="white">白色</option></select></div>
+                  <label class="toggle-row"><span>撮影中に黒板を表示する</span><input id="boardVisible" type="checkbox" checked></label>
+                  <label class="toggle-row"><span>黒板なしの元写真も保存する</span><input id="saveOriginal" type="checkbox" checked></label>
                 </div>
               </div>
             </div>
 
-            <div class="canvas-wrap" id="canvasWrap">
-              <canvas id="photoCanvas"></canvas>
-            </div>
-
-            <div class="actions no-print">
-              <button class="btn" id="redrawBtn" type="button">黒板を再配置</button>
-              <button class="btn success" id="savePhotoBtn" type="button">黒板付き写真を台帳へ保存</button>
+            <div class="capture-result" id="captureResult">
+              <div class="card-head" style="padding-left:0;padding-right:0;margin-top:10px">
+                <div><h3>3. 撮影結果を確認</h3><p>問題なければ写真台帳へ保存してください</p></div>
+              </div>
+              <div class="capture-preview-shell"><canvas id="photoCanvas"></canvas></div>
+              <div class="actions no-print">
+                <button class="btn" id="retakeBtn" type="button">撮り直す</button>
+                <button class="btn success" id="savePhotoBtn" type="button">写真台帳へ保存</button>
+              </div>
             </div>
           </div>
         </div>
@@ -533,6 +619,16 @@ let state = loadMeta();
 let dbPromise = openDB();
 let currentView = "home";
 let originalImage = null;
+let cameraStream = null;
+let cameraFacingMode = "environment";
+let cameraSourceMode = "none";
+let capturedOriginalBlob = null;
+let capturedCompositeBlob = null;
+let cameraEditorEntryId = "";
+let boardPlacement = {x:.56,y:.56,widthPct:42,visible:true};
+let dragPointers = new Map();
+let dragStart = null;
+let pinchStart = null;
 let objectUrls = [];
 let deferredInstall = null;
 
@@ -619,6 +715,7 @@ function toast(text){
   clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove("show"),2200);
 }
 function goView(view){
+  if(currentView==="camera"&&view!=="camera")stopCamera();
   currentView=view;
   document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
   document.getElementById("view-"+view).classList.add("active");
@@ -648,6 +745,7 @@ document.getElementById("entryForm").addEventListener("submit",e=>{
     memo:document.getElementById("entryMemo").value.trim(),
     shootDate:old?.shootDate||"",
     photoId:old?.photoId||"",
+    originalPhotoId:old?.originalPhotoId||"",
     createdAt:old?.createdAt||new Date().toISOString(),
     updatedAt:new Date().toISOString()
   };
@@ -680,15 +778,20 @@ async function removeEntry(id){
   const x=state.entries.find(e=>e.id===id);if(!x)return;
   if(!confirm(`No.${x.no}を削除しますか？`))return;
   if(x.photoId)await deleteImage(x.photoId);
+  if(x.originalPhotoId)await deleteImage(x.originalPhotoId);
   state.entries=state.entries.filter(e=>e.id!==id);
   if(state.selectedEntryId===id)state.selectedEntryId="";
   saveMeta("台帳項目を削除しました");
 }
 function chooseEntry(id){
+  stopCamera();
   state.selectedEntryId=id;
   originalImage=null;
+  capturedOriginalBlob=null;
+  capturedCompositeBlob=null;
+  cameraEditorEntryId="";
   document.getElementById("cameraFile").value="";
-  document.getElementById("canvasWrap").classList.remove("show");
+  document.getElementById("captureResult").classList.remove("show");
   saveMeta("電子黒板に設定しました");
   goView("camera");
 }
@@ -753,12 +856,9 @@ function boardHTML(x){
 }
 function renderCamera(){
   const x=selectedEntry();
-  document.getElementById("selectedEntryBox").innerHTML=x?`
-    <div class="selected-box">
-      <div class="number">${x.no}</div>
-      <div><h4>${esc(x.workType)}</h4><p><b>工事名：</b>${esc(x.workName)}</p><p><b>内容：</b>${esc(x.workDetail)}</p><p><b>箇所：</b>${esc(x.shootPlace||"－")}</p></div>
-    </div>`:`<div class="empty">台帳番号が選択されていません。</div>`;
-  document.getElementById("boardPreview").innerHTML=boardHTML(x);
+  document.getElementById("selectedEntryBox").innerHTML=x?`<div class="selected-box"><div class="number">${x.no}</div><div><h4>${esc(x.workType)}</h4><p><b>工事名：</b>${esc(x.workName)}</p><p><b>内容：</b>${esc(x.workDetail)}</p><p><b>箇所：</b>${esc(x.shootPlace||"－")}</p></div></div>`:`<div class="empty">台帳番号が選択されていません。</div>`;
+  if(x&&cameraEditorEntryId!==x.id)loadBoardEditor(x);
+  if(!x){cameraEditorEntryId="";document.getElementById("liveBoard").innerHTML=""}
 }
 function releaseObjectUrls(){objectUrls.forEach(URL.revokeObjectURL);objectUrls=[]}
 async function renderLedger(){
@@ -778,7 +878,7 @@ async function renderLedger(){
     const card=document.createElement("article");
     card.className="ledger-card";
     card.innerHTML=`
-      <div class="ledger-header"><span>写真台帳 No.${x.no}</span><span>${fmtDate(x.shootDate||x.planDate)}</span></div>
+      <div class="ledger-header"><span>写真台帳 No.${x.no}${x.originalPhotoId?` <small style="color:#157f55">（元写真あり）</small>`:""}</span><span>${fmtDate(x.shootDate||x.planDate)}</span></div>
       ${url?`<img class="ledger-photo" src="${url}" alt="施工写真 No.${x.no}">`:`<div class="empty" style="aspect-ratio:4/3;display:grid;place-items:center">未撮影</div>`}
       <div class="ledger-info">
         <b>工事名</b><span>${esc(x.workName)}</span>
@@ -798,7 +898,8 @@ async function removePhoto(entryId){
   const x=state.entries.find(e=>e.id===entryId);if(!x||!x.photoId)return;
   if(!confirm("この写真を削除しますか？台帳項目は残ります。"))return;
   await deleteImage(x.photoId);
-  x.photoId="";x.shootDate="";
+  if(x.originalPhotoId)await deleteImage(x.originalPhotoId);
+  x.photoId="";x.originalPhotoId="";x.shootDate="";
   saveMeta("写真を削除しました");
 }
 function renderAll(){
@@ -809,124 +910,204 @@ function renderAll(){
 }
 document.getElementById("ledgerFilter").addEventListener("change",renderLedger);
 
-function readImageFile(file){
-  return new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=()=>{
-      const img=new Image();
-      img.onload=()=>resolve(img);
-      img.onerror=reject;
-      img.src=reader.result;
-    };
-    reader.onerror=reject;
-    reader.readAsDataURL(file);
+
+function getBoardData(){
+  return {
+    workName:document.getElementById("boardWorkName").value.trim(),
+    workType:document.getElementById("boardWorkType").value.trim(),
+    workDetail:document.getElementById("boardWorkDetail").value.trim(),
+    shootPlace:document.getElementById("boardShootPlace").value.trim(),
+    contractor:document.getElementById("boardContractor").value.trim(),
+    shootDate:document.getElementById("boardShootDate").value||today()
+  };
+}
+function boardMarkup(data){
+  return `<div class="board-preview">
+    <div class="board-title">工 事 写 真</div>
+    <div class="board-row"><b>工事名</b><span>${esc(data.workName||"－")}</span></div>
+    <div class="board-row"><b>工種</b><span>${esc(data.workType||"－")}</span></div>
+    <div class="board-row"><b>工事内容</b><span>${esc(data.workDetail||"－")}</span></div>
+    <div class="board-row"><b>撮影箇所</b><span>${esc(data.shootPlace||"－")}</span></div>
+    <div class="board-row"><b>撮影日</b><span>${fmtDate(data.shootDate||today())}</span></div>
+    <div class="board-row"><b>施工会社</b><span>${esc(data.contractor||state.project.primeCompany||"－")}</span></div>
+  </div>`;
+}
+function loadBoardEditor(entry){
+  if(!entry)return;
+  document.getElementById("boardWorkName").value=entry.workName||"";
+  document.getElementById("boardWorkType").value=entry.workType||"";
+  document.getElementById("boardWorkDetail").value=entry.workDetail||"";
+  document.getElementById("boardShootPlace").value=entry.shootPlace||"";
+  document.getElementById("boardContractor").value=entry.contractor||state.project.primeCompany||"";
+  document.getElementById("boardShootDate").value=today();
+  cameraEditorEntryId=entry.id;
+  boardPlacement={x:.56,y:.56,widthPct:Number(document.getElementById("boardSize").value)||42,visible:true};
+  document.getElementById("boardVisible").checked=true;
+  updateLiveBoard();
+  setTimeout(()=>setBoardCorner("br"),0);
+}
+function updateLiveBoard(){
+  const board=document.getElementById("liveBoard");
+  board.innerHTML=boardMarkup(getBoardData());
+  board.classList.toggle("board-black",document.getElementById("boardColor").value==="black");
+  board.classList.toggle("board-white",document.getElementById("boardColor").value==="white");
+  boardPlacement.visible=document.getElementById("boardVisible").checked;
+  board.classList.toggle("is-hidden",!boardPlacement.visible);
+  boardPlacement.widthPct=Number(document.getElementById("boardSize").value)||42;
+  document.getElementById("boardSizeValue").textContent=`${boardPlacement.widthPct}%`;
+  applyBoardPlacement();
+}
+function applyBoardPlacement(){
+  const stage=document.getElementById("liveCameraStage"),board=document.getElementById("liveBoard");
+  if(!stage||!board)return;
+  board.style.width=`${boardPlacement.widthPct}%`;
+  requestAnimationFrame(()=>{
+    const sw=stage.clientWidth,sh=stage.clientHeight,bw=board.offsetWidth,bh=board.offsetHeight;
+    if(!sw||!sh)return;
+    const maxX=Math.max(0,sw-bw),maxY=Math.max(0,sh-bh);
+    let left=Math.max(0,Math.min(maxX,boardPlacement.x*sw));
+    let top=Math.max(0,Math.min(maxY,boardPlacement.y*sh));
+    boardPlacement.x=left/sw;boardPlacement.y=top/sh;
+    board.style.left=`${left}px`;board.style.top=`${top}px`;
   });
 }
-document.getElementById("cameraFile").addEventListener("change",async e=>{
-  const file=e.target.files[0];if(!file)return;
-  if(!selectedEntry()){alert("先に台帳一覧から番号を選択してください。");goView("home");return}
-  if(file.size>25*1024*1024){alert("画像は25MB以下にしてください。");return}
+function setBoardCorner(corner){
+  const stage=document.getElementById("liveCameraStage"),board=document.getElementById("liveBoard");
+  if(!stage||!board)return;
+  board.style.width=`${boardPlacement.widthPct}%`;
+  requestAnimationFrame(()=>{
+    const margin=Math.max(8,stage.clientWidth*.018);
+    const maxX=Math.max(0,stage.clientWidth-board.offsetWidth),maxY=Math.max(0,stage.clientHeight-board.offsetHeight);
+    const left=(corner==="tr"||corner==="br")?Math.max(0,maxX-margin):Math.min(maxX,margin);
+    const top=(corner==="bl"||corner==="br")?Math.max(0,maxY-margin):Math.min(maxY,margin);
+    boardPlacement.x=stage.clientWidth?left/stage.clientWidth:0;
+    boardPlacement.y=stage.clientHeight?top/stage.clientHeight:0;
+    applyBoardPlacement();
+    document.querySelectorAll("[data-corner]").forEach(b=>b.classList.toggle("primary",b.dataset.corner===corner));
+  });
+}
+function showCameraError(message){
+  const box=document.getElementById("cameraError");box.textContent=message;box.classList.toggle("show",Boolean(message));
+}
+function updateCameraUI(mode){
+  cameraSourceMode=mode;
+  const video=document.getElementById("cameraVideo"),img=document.getElementById("selectedImagePreview"),placeholder=document.getElementById("cameraPlaceholder"),status=document.getElementById("cameraStatus");
+  video.classList.toggle("show",mode==="video");img.classList.toggle("show",mode==="image");placeholder.style.display=mode==="none"?"block":"none";
+  status.classList.toggle("live",mode==="video");status.textContent=mode==="video"?"カメラ撮影中":mode==="image"?"選択画像":"待機中";
+  document.getElementById("captureBtn").disabled=mode==="none";
+  setTimeout(()=>setBoardCorner("br"),80);
+}
+async function startCamera(){
+  if(!selectedEntry()){alert("先に台帳一覧から撮影する番号を選択してください。");goView("home");return}
+  showCameraError("");
+  if(!navigator.mediaDevices?.getUserMedia){showCameraError("このブラウザではアプリ内カメラを利用できません。「写真を選択」をお使いください。");return}
+  stopCamera(false);
   try{
-    originalImage=await readImageFile(file);
-    drawComposite();
-  }catch(err){console.error(err);alert("画像を読み込めませんでした。")}
-});
-document.querySelectorAll('input[name="boardPos"]').forEach(x=>x.addEventListener("change",()=>originalImage&&drawComposite()));
-document.getElementById("boardSize").addEventListener("input",()=>originalImage&&drawComposite());
-document.getElementById("boardColor").addEventListener("change",()=>originalImage&&drawComposite());
-document.getElementById("redrawBtn").addEventListener("click",()=>{if(originalImage)drawComposite();else alert("先に現場写真を選択してください。")});
-
+    cameraStream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:cameraFacingMode},width:{ideal:1920},height:{ideal:1080}}});
+    const video=document.getElementById("cameraVideo");video.srcObject=cameraStream;
+    await new Promise(resolve=>{if(video.readyState>=1)resolve();else video.onloadedmetadata=()=>resolve()});
+    await video.play();
+    originalImage=null;updateCameraUI("video");
+  }catch(error){
+    console.error(error);
+    showCameraError("カメラを起動できませんでした。Safariの設定でカメラを許可するか、「写真を選択」をお使いください。");
+    updateCameraUI("none");
+  }
+}
+function stopCamera(resetUI=true){
+  if(cameraStream){cameraStream.getTracks().forEach(track=>track.stop());cameraStream=null}
+  const video=document.getElementById("cameraVideo");if(video)video.srcObject=null;
+  if(resetUI&&cameraSourceMode==="video")updateCameraUI("none");
+}
+async function switchCamera(){cameraFacingMode=cameraFacingMode==="environment"?"user":"environment";await startCamera()}
+function readImageFile(file){
+  return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=reader.result};reader.onerror=reject;reader.readAsDataURL(file)});
+}
+async function selectImageFile(file){
+  if(!file)return;
+  if(!selectedEntry()){alert("先に台帳一覧から撮影する番号を選択してください。");goView("home");return}
+  if(file.size>30*1024*1024){alert("画像は30MB以下にしてください。");return}
+  try{
+    stopCamera(false);originalImage=await readImageFile(file);
+    const preview=document.getElementById("selectedImagePreview");preview.src=originalImage.src;updateCameraUI("image");showCameraError("");
+  }catch(error){console.error(error);showCameraError("画像を読み込めませんでした。別の写真を選択してください。")}
+}
 function wrapText(ctx,text,maxWidth){
   const chars=Array.from(String(text||"－")),lines=[];let line="";
-  for(const ch of chars){
-    const test=line+ch;
-    if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=ch}else line=test;
-  }
-  if(line)lines.push(line);
-  return lines;
+  for(const ch of chars){const test=line+ch;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=ch}else line=test}
+  if(line)lines.push(line);return lines;
 }
-function drawComposite(){
-  const x=selectedEntry();if(!x||!originalImage)return;
-  const canvas=document.getElementById("photoCanvas"),ctx=canvas.getContext("2d");
-  const maxDim=1800,scale=Math.min(1,maxDim/Math.max(originalImage.naturalWidth,originalImage.naturalHeight));
-  canvas.width=Math.max(1,Math.round(originalImage.naturalWidth*scale));
-  canvas.height=Math.max(1,Math.round(originalImage.naturalHeight*scale));
-  ctx.drawImage(originalImage,0,0,canvas.width,canvas.height);
-
-  const sizePct=Number(document.getElementById("boardSize").value)/100;
-  const bw=Math.round(canvas.width*sizePct);
-  const fontBase=Math.max(13,Math.round(bw*0.034));
-  const labelW=Math.round(bw*.27);
-  const pad=Math.round(bw*.025);
-  const titleH=Math.round(fontBase*2.25);
-  const rows=[
-    ["工事名",x.workName],["工種",x.workType],["工事内容",x.workDetail],
-    ["撮影箇所",x.shootPlace||"－"],["撮影日",fmtDate(today())],
-    ["施工会社",x.contractor||state.project.primeCompany||"－"]
-  ];
-
+function drawBoardToCanvas(ctx,data,canvasWidth,canvasHeight,placement,color){
+  if(!placement.visible)return;
+  const bw=Math.round(canvasWidth*(placement.widthPct/100));
+  const fontBase=Math.max(13,Math.round(bw*.034)),labelW=Math.round(bw*.27),pad=Math.round(bw*.025),titleH=Math.round(fontBase*2.25);
+  const rows=[["工事名",data.workName],["工種",data.workType],["工事内容",data.workDetail],["撮影箇所",data.shootPlace||"－"],["撮影日",fmtDate(data.shootDate||today())],["施工会社",data.contractor||state.project.primeCompany||"－"]];
   ctx.font=`700 ${fontBase}px "Yu Gothic","Meiryo",sans-serif`;
   const valWidth=bw-labelW-pad*2;
-  const rowData=rows.map(([label,val])=>{
-    const lines=wrapText(ctx,val,valWidth);
-    const h=Math.max(Math.round(fontBase*2.05),Math.round(lines.length*fontBase*1.35+pad*1.2));
-    return {label,val,lines,h};
-  });
+  const rowData=rows.map(([label,val])=>{const lines=wrapText(ctx,val,valWidth);const h=Math.max(Math.round(fontBase*2.05),Math.round(lines.length*fontBase*1.35+pad*1.2));return{label,lines,h}});
   const bh=titleH+rowData.reduce((s,r)=>s+r.h,0);
-  const margin=Math.round(canvas.width*.025);
-  const pos=document.querySelector('input[name="boardPos"]:checked').value;
-  let bx=margin,by=canvas.height-bh-margin;
-  if(pos==="br"||pos==="tr")bx=canvas.width-bw-margin;
-  if(pos==="tl"||pos==="tr")by=margin;
-  bx=Math.max(0,Math.min(canvas.width-bw,bx));by=Math.max(0,Math.min(canvas.height-bh,by));
-
-  const color=document.getElementById("boardColor").value;
-  const bg=color==="green"?"rgba(22,58,49,.94)":color==="black"?"rgba(18,22,26,.94)":"rgba(255,255,255,.94)";
-  const fg=color==="white"?"#101820":"#ffffff";
-  const border=color==="white"?"#2f3b43":"#c99b61";
-  ctx.fillStyle=border;ctx.fillRect(bx-5,by-5,bw+10,bh+10);
-  ctx.fillStyle=bg;ctx.fillRect(bx,by,bw,bh);
-  ctx.strokeStyle=color==="white"?"rgba(20,30,36,.75)":"rgba(255,255,255,.78)";
-  ctx.lineWidth=Math.max(1,Math.round(bw*.003));
-  ctx.strokeRect(bx,by,bw,bh);
+  let bx=Math.round(placement.x*canvasWidth),by=Math.round(placement.y*canvasHeight);
+  bx=Math.max(0,Math.min(canvasWidth-bw,bx));by=Math.max(0,Math.min(canvasHeight-bh,by));
+  const bg=color==="green"?"rgba(22,58,49,.94)":color==="black"?"rgba(18,22,26,.94)":"rgba(255,255,255,.95)";
+  const fg=color==="white"?"#101820":"#ffffff",border=color==="white"?"#2f3b43":"#c99b61",grid=color==="white"?"rgba(20,30,36,.72)":"rgba(255,255,255,.78)";
+  ctx.fillStyle=border;ctx.fillRect(bx-5,by-5,bw+10,bh+10);ctx.fillStyle=bg;ctx.fillRect(bx,by,bw,bh);
+  ctx.strokeStyle=grid;ctx.lineWidth=Math.max(1,Math.round(bw*.003));ctx.strokeRect(bx,by,bw,bh);
   ctx.beginPath();ctx.moveTo(bx,by+titleH);ctx.lineTo(bx+bw,by+titleH);ctx.stroke();
-
-  ctx.fillStyle=fg;ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.font=`900 ${Math.round(fontBase*1.18)}px "Yu Gothic","Meiryo",sans-serif`;
-  ctx.fillText("工 事 写 真",bx+bw/2,by+titleH/2);
-
+  ctx.fillStyle=fg;ctx.textAlign="center";ctx.textBaseline="middle";ctx.font=`900 ${Math.round(fontBase*1.18)}px "Yu Gothic","Meiryo",sans-serif`;ctx.fillText("工 事 写 真",bx+bw/2,by+titleH/2);
   let cy=by+titleH;
   for(const row of rowData){
-    ctx.beginPath();ctx.moveTo(bx,cy+row.h);ctx.lineTo(bx+bw,cy+row.h);ctx.stroke();
-    ctx.beginPath();ctx.moveTo(bx+labelW,cy);ctx.lineTo(bx+labelW,cy+row.h);ctx.stroke();
-
-    ctx.fillStyle=fg;ctx.textAlign="center";ctx.font=`800 ${fontBase}px "Yu Gothic","Meiryo",sans-serif`;
-    ctx.fillText(row.label,bx+labelW/2,cy+row.h/2);
-
-    ctx.textAlign="left";ctx.font=`700 ${fontBase}px "Yu Gothic","Meiryo",sans-serif`;
-    const lineH=fontBase*1.35,totalH=row.lines.length*lineH;
-    let ty=cy+(row.h-totalH)/2+lineH/2;
-    for(const line of row.lines){ctx.fillText(line,bx+labelW+pad,ty);ty+=lineH}
-    cy+=row.h;
+    ctx.beginPath();ctx.moveTo(bx,cy+row.h);ctx.lineTo(bx+bw,cy+row.h);ctx.stroke();ctx.beginPath();ctx.moveTo(bx+labelW,cy);ctx.lineTo(bx+labelW,cy+row.h);ctx.stroke();
+    ctx.fillStyle=fg;ctx.textAlign="center";ctx.font=`800 ${fontBase}px "Yu Gothic","Meiryo",sans-serif`;ctx.fillText(row.label,bx+labelW/2,cy+row.h/2);
+    ctx.textAlign="left";ctx.font=`700 ${fontBase}px "Yu Gothic","Meiryo",sans-serif`;const lineH=fontBase*1.35,totalH=row.lines.length*lineH;let ty=cy+(row.h-totalH)/2+lineH/2;
+    for(const line of row.lines){ctx.fillText(line,bx+labelW+pad,ty);ty+=lineH}cy+=row.h;
   }
-  document.getElementById("canvasWrap").classList.add("show");
 }
-document.getElementById("savePhotoBtn").addEventListener("click",async()=>{
-  const x=selectedEntry();if(!x){alert("台帳番号を選択してください。");return}
-  const canvas=document.getElementById("photoCanvas");
-  if(!originalImage||!canvas.width){alert("先に現場写真を撮影または選択してください。");return}
-  const btn=document.getElementById("savePhotoBtn"),old=btn.textContent;
-  btn.disabled=true;btn.textContent="保存中…";
+function canvasBlob(canvas,quality=.86){return new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",quality))}
+async function captureCurrentFrame(){
+  const entry=selectedEntry();if(!entry){alert("台帳番号を選択してください。");return}
+  const video=document.getElementById("cameraVideo");let source=null,sw=0,sh=0;
+  if(cameraSourceMode==="video"&&video.videoWidth){source=video;sw=video.videoWidth;sh=video.videoHeight}
+  else if(cameraSourceMode==="image"&&originalImage){source=originalImage;sw=originalImage.naturalWidth;sh=originalImage.naturalHeight}
+  if(!source||!sw||!sh){alert("カメラを開始するか、写真を選択してください。");return}
+  const maxDim=2200,scale=Math.min(1,maxDim/Math.max(sw,sh));
+  const base=document.createElement("canvas");base.width=Math.max(1,Math.round(sw*scale));base.height=Math.max(1,Math.round(sh*scale));
+  const bctx=base.getContext("2d");bctx.drawImage(source,0,0,base.width,base.height);capturedOriginalBlob=await canvasBlob(base,.9);
+  const output=document.getElementById("photoCanvas");output.width=base.width;output.height=base.height;const ctx=output.getContext("2d");ctx.drawImage(base,0,0);
+  drawBoardToCanvas(ctx,getBoardData(),output.width,output.height,{...boardPlacement},document.getElementById("boardColor").value);
+  capturedCompositeBlob=await canvasBlob(output,.86);document.getElementById("captureResult").classList.add("show");document.getElementById("captureResult").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function retake(){capturedOriginalBlob=null;capturedCompositeBlob=null;document.getElementById("captureResult").classList.remove("show")}
+async function saveCapturedPhoto(){
+  const x=selectedEntry();if(!x||!capturedCompositeBlob){alert("先に写真を撮影してください。");return}
+  const btn=document.getElementById("savePhotoBtn"),old=btn.textContent;btn.disabled=true;btn.textContent="保存中…";
   try{
-    const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.84));
-    const newId=x.photoId||uid("img");
-    await putImage(newId,blob);
-    x.photoId=newId;x.shootDate=today();x.updatedAt=new Date().toISOString();
-    saveMeta("黒板付き写真を台帳へ保存しました");
-    goView("ledger");
-  }catch(err){console.error(err);alert("写真を保存できませんでした。端末の空き容量をご確認ください。")}
+    const data=getBoardData();x.workName=data.workName;x.workType=data.workType;x.workDetail=data.workDetail;x.shootPlace=data.shootPlace;x.contractor=data.contractor;x.shootDate=data.shootDate;x.updatedAt=new Date().toISOString();
+    const compositeId=x.photoId||uid("img");await putImage(compositeId,capturedCompositeBlob);x.photoId=compositeId;
+    if(document.getElementById("saveOriginal").checked&&capturedOriginalBlob){const originalId=x.originalPhotoId||uid("org");await putImage(originalId,capturedOriginalBlob);x.originalPhotoId=originalId}
+    else if(x.originalPhotoId){await deleteImage(x.originalPhotoId);x.originalPhotoId=""}
+    saveMeta("写真台帳へ保存しました");retake();goView("ledger");
+  }catch(error){console.error(error);alert("写真を保存できませんでした。端末の空き容量をご確認ください。")}
   finally{btn.disabled=false;btn.textContent=old}
-});
+}
+function setupBoardGestures(){
+  const board=document.getElementById("liveBoard"),stage=document.getElementById("liveCameraStage");
+  board.addEventListener("pointerdown",event=>{
+    event.preventDefault();board.setPointerCapture(event.pointerId);dragPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});board.classList.add("dragging");
+    if(dragPointers.size===1){const r=board.getBoundingClientRect(),s=stage.getBoundingClientRect();dragStart={pointerId:event.pointerId,clientX:event.clientX,clientY:event.clientY,left:r.left-s.left,top:r.top-s.top}}
+    if(dragPointers.size===2){const p=[...dragPointers.values()];pinchStart={distance:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y),widthPct:boardPlacement.widthPct}}
+  });
+  board.addEventListener("pointermove",event=>{
+    if(!dragPointers.has(event.pointerId))return;event.preventDefault();dragPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+    if(dragPointers.size>=2&&pinchStart){const p=[...dragPointers.values()];const dist=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);boardPlacement.widthPct=Math.max(26,Math.min(65,pinchStart.widthPct*(dist/pinchStart.distance)));document.getElementById("boardSize").value=Math.round(boardPlacement.widthPct);updateLiveBoard();return}
+    if(dragPointers.size===1&&dragStart){const left=dragStart.left+(event.clientX-dragStart.clientX),top=dragStart.top+(event.clientY-dragStart.clientY);const maxX=Math.max(0,stage.clientWidth-board.offsetWidth),maxY=Math.max(0,stage.clientHeight-board.offsetHeight);const cl=Math.max(0,Math.min(maxX,left)),ct=Math.max(0,Math.min(maxY,top));boardPlacement.x=stage.clientWidth?cl/stage.clientWidth:0;boardPlacement.y=stage.clientHeight?ct/stage.clientHeight:0;applyBoardPlacement()}
+  });
+  const end=event=>{dragPointers.delete(event.pointerId);if(dragPointers.size<2)pinchStart=null;if(!dragPointers.size){dragStart=null;board.classList.remove("dragging")}};
+  board.addEventListener("pointerup",end);board.addEventListener("pointercancel",end);
+}
+["boardWorkName","boardWorkType","boardWorkDetail","boardShootPlace","boardContractor","boardShootDate"].forEach(id=>document.getElementById(id).addEventListener("input",updateLiveBoard));
+document.getElementById("boardSize").addEventListener("input",updateLiveBoard);document.getElementById("boardColor").addEventListener("change",updateLiveBoard);document.getElementById("boardVisible").addEventListener("change",updateLiveBoard);
+document.querySelectorAll("[data-corner]").forEach(button=>button.addEventListener("click",()=>setBoardCorner(button.dataset.corner)));
+document.getElementById("startCameraBtn").addEventListener("click",startCamera);document.getElementById("switchCameraBtn").addEventListener("click",switchCamera);document.getElementById("stopCameraBtn").addEventListener("click",()=>stopCamera());document.getElementById("captureBtn").addEventListener("click",captureCurrentFrame);document.getElementById("selectPhotoBtn").addEventListener("click",()=>document.getElementById("cameraFile").click());document.getElementById("cameraFile").addEventListener("change",event=>selectImageFile(event.target.files[0]));document.getElementById("retakeBtn").addEventListener("click",retake);document.getElementById("savePhotoBtn").addEventListener("click",saveCapturedPhoto);window.addEventListener("resize",applyBoardPlacement);setupBoardGestures();
 
 function csvCell(v){return `"${String(v??"").replaceAll('"','""')}"`}
 function download(name,content,type){
@@ -950,12 +1131,11 @@ function dataURLToBlob(dataURL){
 async function exportBackup(){
   const images={};
   for(const x of state.entries){
-    if(x.photoId){
-      const blob=await getImage(x.photoId);
-      if(blob)images[x.photoId]=await blobToDataURL(blob);
+    for(const imageId of [x.photoId,x.originalPhotoId]){
+      if(imageId){const blob=await getImage(imageId);if(blob)images[imageId]=await blobToDataURL(blob)}
     }
   }
-  download(`写真台帳バックアップ_${today()}.json`,JSON.stringify({version:3,state,images}),"application/json");
+  download(`写真台帳バックアップ_${today()}.json`,JSON.stringify({version:4,state,images}),"application/json");
   toast("バックアップを出力しました");
 }
 async function restoreBackup(){
@@ -1015,6 +1195,7 @@ if("serviceWorker" in navigator&&location.protocol.startsWith("http")){
 }
 
 resetEntryForm();
+updateCameraUI("none");
 renderAll();
 </script>
 </body>
